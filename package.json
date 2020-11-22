@@ -1,0 +1,27 @@
+{
+  "name": "MyBoard-Server",
+  "version": "1.0.0",
+  "description": "This repository is the backend RESTful API for the MyBoard application\r The application is writen using Express.js",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "dev": "nodemon index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/WiegnerO/MyBoard-Server.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/WiegnerO/MyBoard-Server/issues"
+  },
+  "homepage": "https://github.com/WiegnerO/MyBoard-Server#readme",
+  "dependencies": {
+    "dotenv": "^8.2.0",
+    "express": "^4.17.1",
+    "nodemon": "^2.0.6",
+    "shortid": "^2.2.16"
+  }
+}
