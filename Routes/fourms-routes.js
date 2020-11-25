@@ -27,23 +27,50 @@ router.post('', (req, res) => {
     fourmInfo.id = shortid.generate();
     fourms.push(fourmInfo);
     res.status(201).json(fourmInfo);
+    console.log('post requset from api/fourms has been made :\n\t' +
+    JSON.stringify(fourmInfo));
 });
 
 /**
- * This allows users get all the fourm topics to the server
+ * This allows users get all the fourm topics from the server
  */
 router.get('', (req, res) => {
+    console.log('get requset from api/fourms has been made');
     res.json(fourms);
 });
 
+/**
+ * This allows users get a specific fourm topic from the server
+ */
 router.get('/:id', (req, res) => {
     const topic = req.params.id; 
     for(i=0 ; i < fourms.length ; i++){
-       if(fourms[i] == topic){
-        res.status(201).json('hi');
+       if(fourms[i].name == topic){
+        console.log(`get requset from api/fourms/${topic} has been made`);
+        res.status(201).json(fourms[i]);
+        return;
        }
     }
-    res.status(500).json(fourms[0]);
+    console.log(`get requset from api/fourms/${topic} has NOT been made`);
+    res.status(500).json({messages : `get requset from api/fourms/${topic} has NOT been made`});
 });
+
+/**
+ * This allows users delete a specific fourm topic from the server
+ */
+router.delete('/:id', (req, res) => {
+    const topic = req.params.id; 
+    for(i=0 ; i < fourms.length ; i++){
+       if(fourms[i].name == topic){
+        console.log(`delete requset from api/fourms/${topic} has been made`);
+        res.status(201).json(fourms[i]);
+        fourms.splice(i , 1);
+        return;
+       }
+    }
+    console.log(`delete requset from api/fourms/${topic} has NOT been made`);
+    res.status(500).json({messages : `delete requset from api/fourms/${topic} has NOT been made`});
+});
+
 
 module.exports = router

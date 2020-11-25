@@ -2,6 +2,15 @@ const express = require('express');
 
 const server = express();
 
+/**
+ * Help with CORS issues
+ */
+server.use((req, res, next) => {
+    res.header('Access-Control-Allow-Origin', '*');
+    res.header("Access-Control-Allow-Headers", "Origin, x-requested-with, content-type, accept, authorization")
+    next();
+  });
+
 //Sets up the routes
 const fourmsRouter = require('../Routes/fourms-routes');
 
