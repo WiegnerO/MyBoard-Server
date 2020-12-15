@@ -4,6 +4,7 @@ const router = express.Router();
 
 router.use(express.json());
 
+//fake db data for now
 const fourms = [
     {
         "name": "movies",
@@ -23,19 +24,18 @@ const fourms = [
  * This allows users to post a new fourm topic to the server
  */
 router.post('', (req, res) => {
+    console.log('POST requset from api/fourms has been made :\n\t' + JSON.stringify(fourmInfo));
     const fourmInfo = req.body
     fourmInfo.id = shortid.generate();
     fourms.push(fourmInfo);
     res.status(201).json(fourmInfo);
-    console.log('post requset from api/fourms has been made :\n\t' +
-    JSON.stringify(fourmInfo));
 });
 
 /**
  * This allows users get all the fourm topics from the server
  */
 router.get('', (req, res) => {
-    console.log('get requset from api/fourms has been made');
+    console.log('GET requset from api/fourms has been made');
     res.json(fourms);
 });
 

@@ -4,6 +4,7 @@ const router = express.Router();
 
 router.use(express.json());
 
+//fake db data for now
 const messages = [
     {
         "title": "IMO best movie",
