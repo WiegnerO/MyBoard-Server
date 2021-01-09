@@ -11,18 +11,23 @@ const users = [
     {
         "id" : 1,
         "username": "Bob",
+        "name" : "bob" ,
+
         //1234
         "password": "$2a$12$3rjoWqxdTkSCkEmqliWnRuxBnmg51Weeyqfc21UomJHu.vUK.lWp."
     },
     {
         "id" : 2,
         "username": "Obo",
+        "name" : "bob" ,
         //4321
         "password": "$2a$12$mq4Itm7uorFWVra/x7oRPeqhNhKmtgmoOjqs7KsAGK0pUVGtwc0a."
     },
     {
         "id" : 3,
         "username": "ff",
+        "name" : "bob" ,
+
         //ff
         "password": "$2a$12$hvvWHpJNhTKNIsIqRSBeU.K637V6rSMWJTJK3ScmZWe3QdZzxNaOy"
     }
@@ -45,6 +50,9 @@ router.post('/register', (req, res) =>{
         credantials.id = shortid.generate();
         //push the username and the newly hashed password in the "database"
         users.push(credantials);
+        const token = generateToken(credantials);
+        name =  credantials.username;
+        id =  credantials.id;
         res.status(200).json({ message: `${username}` + " is added" });
     }
 });
@@ -74,7 +82,9 @@ router.post('/login', (req, res) =>{
                 if(bcyrpt.compareSync(password, users[i].password)){
                     const token = generateToken(users[i]);
                     x = true;
-                    res.status(200).json({ message: `${username} is a logged in user`, token});
+                    name =  users[i].username;
+                    id =  users[i].id;
+                    res.status(200).json({token , name, id});
                 }
             }
         }
@@ -84,24 +94,6 @@ router.post('/login', (req, res) =>{
         }
     }
 });
-
-
-/**
- * Logout the application 
- */
-router.get('/logout', (req, res) =>{
-    if (req.session){
-        req.session.destroy(err => {
-            if(err){
-                res.status(500).json({message: 'something went wrong try again'})
-            }else{
-                res.status(200).json({message: 'you logged out succefully'})
-            }
-        })
-    } else{
-        res.status(200).json({message: 'You were already logged out'})
-    }
-})
 
 
 

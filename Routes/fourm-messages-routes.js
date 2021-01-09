@@ -9,33 +9,45 @@ const messages = [
     {
         "title": "IMO best movie",
         "content": "The Shawshank Redemption",
-        "id": "1"
+        "Mid": "1",
+        "Uid": "1",
+        "Bid": "sports"
     },
     {
         "title": "^^100% true",
         "content": "I agree with your post",
-        "id": "2"
+        "Mid": "2",
+        "Uid": "2",
+        "Bid": "music"
     },
     {
         "title": "Defs not true",
         "content": "No way the best movie is Super Mario Bros the movie",
-        "id": "3"
+        "Mid": "3",
+        "Uid": "3",
+        "Bid": "movies"
     }
 ];
 
 /**
  * This allows users get all the messages of a specific topics
  */
-router.get('', (req, res) => {
+router.get('/:Bid', (req, res) => {
+    const boardId = req.params.Bid;
     console.log('get requset from api/message has been made');
-    res.json(messages);
+    var filter_function = function(e){
+        return e.Bid == boardId
+    }
+    const x = messages.filter(filter_function)
+    console.log(x)
+    res.json(x);
 });
 
-router.post('', (req, res) => {
+router.post('/', (req, res) => {
     const message = req.body
-    message.id = shortid.generate();
+    message.Mid = shortid.generate();
     messages.push(message);
-    res.status(201).json(message);
+    res.status(201).json({message : message});
     console.log('post requset from api/fourms has been made :\n\t' + JSON.stringify(message));
 });
 
@@ -43,17 +55,12 @@ router.post('', (req, res) => {
 /**
  * This allows users delete a specific fourm message from the server
  */
-router.delete('/:id', (req, res) => {
-    const id = req.params.id;
-    console.log("YYZ " + id);
-    for(i=0 ; i < messages.length ; i++){
-       if(messages[i].id == id){
-        res.status(201).json(messages[i]);
-        messages.splice(i , 1);
-        return;
-       }
-    }
-    res.status(500).json({messages : `delete requset from has NOT been made`});
+router.delete(':Bid/:Mid', (req, res) => {
+    const boardId = req.params.Bid;
+    const messageId = req.params.Mid;
+    return messages.filter(message => {
+        message.Mid = messageId;
+    })
 });
 
 module.exports = router

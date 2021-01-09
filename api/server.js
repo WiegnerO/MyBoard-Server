@@ -20,6 +20,7 @@ const authRouter = require('../Authentication/auth-routes');
 
 server.use(express.json());
 
+//TODO uadd the middleware
 server.use('/api/auth', authRouter);
 server.use('/api/fourms', fourmsRouter);
 server.use('/api/messages', fourmMessageRouter);
