@@ -37,9 +37,10 @@ const users = [
  * Register a new user into the system
 */
 router.post('/register', (req, res) =>{
-    console.log('POST requset from api/auth/register has been made');
+    console.log('Request\t: POST\nRoute\t: api/auth/register');
     const credantials = req.body;
     const { username, password } = credantials;
+    console.log("credantials " + credantials)
     //make sure user entered both username and password
     if(!(username && password)){
         res.status(400).json({message: "username and password requried"});
@@ -53,7 +54,7 @@ router.post('/register', (req, res) =>{
         const token = generateToken(credantials);
         name =  credantials.username;
         id =  credantials.id;
-        res.status(200).json({ message: `${username}` + " is added" });
+        res.status(200).json({token , name, id});
     }
 });
 
@@ -61,7 +62,7 @@ router.post('/register', (req, res) =>{
  * Dev method only used to see the array for now will delete later
  */
 router.get('', (req, res) =>{
-    console.log('GET requset from api/auth has been made');
+    console.log('Request\t: GET\nRoute\t: api/auth/auth');
     res.json(users);
 });
 
@@ -70,7 +71,7 @@ router.get('', (req, res) =>{
  */
 router.post('/login', (req, res) =>{
     let x  = false;
-    console.log('POST requset from api/auth/login has been made');
+    console.log('Request\t: POST\nRoute\t: api/auth/login');
     const credantials = req.body;
     const { username, password } = credantials;
     //make sure user entered both username and password

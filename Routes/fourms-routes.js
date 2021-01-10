@@ -24,8 +24,8 @@ const fourms = [
  * This allows users to post a new fourm topic to the server
  */
 router.post('', (req, res) => {
-    console.log('POST requset from api/fourms has been made :\n\t' + JSON.stringify(fourmInfo));
     const fourmInfo = req.body
+    console.log('Request\t: POST \nRoute\t: api/fourms');
     fourmInfo.id = shortid.generate();
     fourms.push(fourmInfo);
     res.status(201).json(fourmInfo);
@@ -35,7 +35,7 @@ router.post('', (req, res) => {
  * This allows users get all the fourm topics from the server
  */
 router.get('', (req, res) => {
-    console.log('GET requset from api/fourms has been made');
+    console.log('Request\t: GET \nRoute\t: api/fourms');
     res.json(fourms);
 });
 
@@ -46,13 +46,12 @@ router.get('/:id', (req, res) => {
     const topic = req.params.id; 
     for(i=0 ; i < fourms.length ; i++){
        if(fourms[i].name == topic){
-        console.log(`get requset from api/fourms/${topic} has been made`);
+        console.log(`Request\t: GET \nRoute\t: api/fourms/${topic}`);
         res.status(201).json(fourms[i]);
         return;
        }
     }
-    console.log(`get requset from api/fourms/${topic} has NOT been made`);
-    res.status(500).json({messages : `get requset from api/fourms/${topic} has NOT been made`});
+    res.status(500).json({messages : `get request from api/fourms/${topic} has NOT been made`});
 });
 
 /**
@@ -60,16 +59,16 @@ router.get('/:id', (req, res) => {
  */
 router.delete('/:id', (req, res) => {
     const topic = req.params.id; 
+    console.log(`Request\t: Delete \nRoute\t: api/fourms/${topic} has been made`);
     for(i=0 ; i < fourms.length ; i++){
        if(fourms[i].name == topic){
-        console.log(`delete requset from api/fourms/${topic} has been made`);
         res.status(201).json(fourms[i]);
         fourms.splice(i , 1);
         return;
        }
     }
-    console.log(`delete requset from api/fourms/${topic} has NOT been made`);
-    res.status(500).json({messages : `delete requset from api/fourms/${topic} has NOT been made`});
+    console.log(`delete request from api/fourms/${topic} has NOT been made`);
+    res.status(500).json({messages : `delete request from api/fourms/${topic} has NOT been made`});
 });
 
 

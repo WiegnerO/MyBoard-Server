@@ -5,7 +5,7 @@ const router = express.Router();
 router.use(express.json());
 
 //fake db data for now
-const messages = [
+var messages = [
     {
         "title": "IMO best movie",
         "content": "The Shawshank Redemption",
@@ -34,33 +34,36 @@ const messages = [
  */
 router.get('/:Bid', (req, res) => {
     const boardId = req.params.Bid;
-    console.log('get requset from api/message has been made');
+    console.log(`Request\t: GET \nRoute\t: api/fourms/${boardId}`);
     var filter_function = function(e){
         return e.Bid == boardId
     }
-    const x = messages.filter(filter_function)
-    console.log(x)
-    res.json(x);
+    const boardMessages = messages.filter(filter_function)
+    res.json(boardMessages);
 });
 
-router.post('/', (req, res) => {
+router.post('/:Bid', (req, res) => {
+    const boardId = req.params.Bid;
     const message = req.body
+    console.log(`Request\t: POST \nRoute\t: api/fourms/${boardId}`);
     message.Mid = shortid.generate();
     messages.push(message);
     res.status(201).json({message : message});
-    console.log('post requset from api/fourms has been made :\n\t' + JSON.stringify(message));
 });
 
 
 /**
  * This allows users delete a specific fourm message from the server
  */
-router.delete(':Bid/:Mid', (req, res) => {
+router.delete('/:Bid/:Mid', (req, res) => {
     const boardId = req.params.Bid;
     const messageId = req.params.Mid;
-    return messages.filter(message => {
-        message.Mid = messageId;
-    })
+    console.log(`Request\t: DELETE \nRoute\t: api/fourms/${boardId}/${messageId}`);
+    var filter_function = function(e){
+        return e.Mid != messageId
+    }
+    messages = messages.filter(filter_function)
+    res.json(messages);
 });
 
 module.exports = router

@@ -1,10 +1,13 @@
 const express = require('express');
 const restricted = require('../Authentication/restricted-middleware')
 const server = express();
+var cors = require('cors')
 
 /**
  * Help with CORS issues
  */
+
+server.use(cors())
 server.use((req, res, next) => {
     res.header('Access-Control-Allow-Origin', '*');
     res.header("Access-Control-Allow-Origin", "*");
