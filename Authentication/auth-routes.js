@@ -1,46 +1,18 @@
 const express = require('express');
 const router = express.Router();
 const bcyrpt = require('bcryptjs');
-const shortid = require('shortid');
 const generateToken = require('./generateToken');
-
+const USERDB = require('../Services/UserService');
+const CONSOLEOUTPUT = require('../Services/consoleOutput')
 router.use(express.json());
-
-//temporary db for now
-const users = [
-    {
-        "id" : 1,
-        "username": "Bob",
-        "name" : "bob" ,
-
-        //1234
-        "password": "$2a$12$3rjoWqxdTkSCkEmqliWnRuxBnmg51Weeyqfc21UomJHu.vUK.lWp."
-    },
-    {
-        "id" : 2,
-        "username": "Obo",
-        "name" : "bob" ,
-        //4321
-        "password": "$2a$12$mq4Itm7uorFWVra/x7oRPeqhNhKmtgmoOjqs7KsAGK0pUVGtwc0a."
-    },
-    {
-        "id" : 3,
-        "username": "ff",
-        "name" : "bob" ,
-
-        //ff
-        "password": "$2a$12$hvvWHpJNhTKNIsIqRSBeU.K637V6rSMWJTJK3ScmZWe3QdZzxNaOy"
-    }
-];
 
 /**
  * Register a new user into the system
 */
 router.post('/register', (req, res) =>{
-    console.log('Request\t: POST\nRoute\t: api/auth/register');
+    console.log(CONSOLEOUTPUT.requestConsole(req));
     const credantials = req.body;
-    const { username, password } = credantials;
-    console.log("credantials " + credantials)
+    const { username, password, first_name, last_name } = credantials;
     //make sure user entered both username and password
     if(!(username && password)){
         res.status(400).json({message: "username and password requried"});
@@ -48,22 +20,58 @@ router.post('/register', (req, res) =>{
         //hash the password
         const hash = bcyrpt.hashSync(credantials.password, 12);
         credantials.password = hash;
-        credantials.id = shortid.generate();
         //push the username and the newly hashed password in the "database"
-        users.push(credantials);
-        const token = generateToken(credantials);
-        name =  credantials.username;
-        id =  credantials.id;
-        res.status(200).json({token , name, id});
+        USERDB.addUser(credantials)
+            .then(user => {
+                const token = generateToken(credantials);
+                id =  user;
+                name = first_name + " " + last_name;
+                res.status(200).json({token , username, name, id});
+            })
+            .catch(err => {
+                if(err.errno == 19){
+                    // err status of nonunique username value
+                    res.status(400).json({message: "Username is already taken"});
+                }
+                else{
+                    res.status(500).json({error : "error"});
+                }
+            })
     }
 });
 
 /**
- * Dev method only used to see the array for now will delete later
+ * Dev method only used to see the array
  */
 router.get('', (req, res) =>{
-    console.log('Request\t: GET\nRoute\t: api/auth/auth');
-    res.json(users);
+    console.log(CONSOLEOUTPUT.requestConsole(req));
+    USERDB.findAllUsers()
+    .then(users =>{
+        res.status(200).json(users)
+    })
+    .catch(err => {
+        res.res.status(500).json({message : err})
+    })
+});
+
+/**
+ * This allows users delete a specific board topic from the server
+ */
+router.delete('/:user_id', (req, res) => {
+    const user_id = req.params.user_id;
+    console.log(CONSOLEOUTPUT.requestConsole(req));
+    USERDB.removeUser(user_id)
+    .then(count =>{
+        if(count > 0){
+            res.status(200).json({ message: "Deleted"})
+        }
+        else{
+            res.status(404).json({ message: "Board does not exist"})
+        }
+    })
+    .catch( error => {
+        res.status(500).json({ message: error})
+    })
 });
 
 /**
@@ -71,28 +79,27 @@ router.get('', (req, res) =>{
  */
 router.post('/login', (req, res) =>{
     let x  = false;
-    console.log('Request\t: POST\nRoute\t: api/auth/login');
+    console.log(CONSOLEOUTPUT.requestConsole(req));
     const credantials = req.body;
     const { username, password } = credantials;
     //make sure user entered both username and password
     if(!(username && password)){
         res.status(400).json({message: "username and password requried"});
     }else{
-        for(i=0 ; i < users.length ; i++){
-            if(users[i].username === username){
-                if(bcyrpt.compareSync(password, users[i].password)){
-                    const token = generateToken(users[i]);
-                    x = true;
-                    name =  users[i].username;
-                    id =  users[i].id;
-                    res.status(200).json({token , name, id});
-                }
+        USERDB.findUserByUsername(username)
+        .then( user => {
+            if (user && bcyrpt.compareSync(password, user.password)){
+                const token = generateToken(user);
+                name = user.first_name + " " + user.last_name;
+                id = user.id;
+                res.status(200).json({token , name, id});
+            }else{
+                res.status(401).json({ message: 'invalid crediantials'});
             }
-        }
-        // for now is the else when the DB is added in this wont be nessecary 
-        if(!x){
-            res.status(500).json({ message: `${username} is not a user`});
-        }
+        })
+        .catch(err => {
+            res.status(500).json({message : err})
+        })
     }
 });
 

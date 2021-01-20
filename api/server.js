@@ -17,16 +17,16 @@ server.use((req, res, next) => {
   });
 
 //Sets up the routes
-const fourmsRouter = require('../Routes/fourms-routes');
-const fourmMessageRouter = require('../Routes/fourm-messages-routes');
+const boardsRouter = require('../Routes/board-routes');
+const boardMessageRouter = require('../Routes/board-messages-routes');
 const authRouter = require('../Authentication/auth-routes');
 
 server.use(express.json());
 
 //TODO uadd the middleware
 server.use('/api/auth', authRouter);
-server.use('/api/fourms', fourmsRouter);
-server.use('/api/messages', fourmMessageRouter);
+server.use('/api/boards', boardsRouter);
+server.use('/api/messages', boardMessageRouter);
 
 
 server.get('', (req, res) => {

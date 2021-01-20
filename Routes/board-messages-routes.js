@@ -1,7 +1,7 @@
 const express = require('express');
 const shortid = require('shortid');
 const router = express.Router();
-
+const CONSOLEOUTPUT = require('../Services/consoleOutput')
 router.use(express.json());
 
 //fake db data for now
@@ -34,7 +34,7 @@ var messages = [
  */
 router.get('/:Bid', (req, res) => {
     const boardId = req.params.Bid;
-    console.log(`Request\t: GET \nRoute\t: api/fourms/${boardId}`);
+    console.log(CONSOLEOUTPUT.requestConsole(req));
     var filter_function = function(e){
         return e.Bid == boardId
     }
@@ -45,7 +45,7 @@ router.get('/:Bid', (req, res) => {
 router.post('/:Bid', (req, res) => {
     const boardId = req.params.Bid;
     const message = req.body
-    console.log(`Request\t: POST \nRoute\t: api/fourms/${boardId}`);
+    console.log(CONSOLEOUTPUT.requestConsole(req));
     message.Mid = shortid.generate();
     messages.push(message);
     res.status(201).json({message : message});
@@ -53,12 +53,12 @@ router.post('/:Bid', (req, res) => {
 
 
 /**
- * This allows users delete a specific fourm message from the server
+ * This allows users delete a specific board message from the server
  */
 router.delete('/:Bid/:Mid', (req, res) => {
     const boardId = req.params.Bid;
     const messageId = req.params.Mid;
-    console.log(`Request\t: DELETE \nRoute\t: api/fourms/${boardId}/${messageId}`);
+    console.log(CONSOLEOUTPUT.requestConsole(req));
     var filter_function = function(e){
         return e.Mid != messageId
     }

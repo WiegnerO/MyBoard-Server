@@ -42,3 +42,6 @@ table board_posts(
     unique b_id FK referances Boards
 )
 
+npx knex migrate:rollback
+npx knex migrate:latest
+
