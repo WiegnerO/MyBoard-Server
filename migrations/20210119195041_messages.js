@@ -33,11 +33,3 @@ exports.up = function(knex) {
   exports.down = function(knex) {
       return knex.schema.dropTable('messages');
   };
-
-// .select(
-//     'message.id',
-//     'message.board_id',
-//     'message.creator_id',
-//     'message.post_title',
-//     'message.post_content'
-// )

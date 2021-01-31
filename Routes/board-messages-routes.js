@@ -5,7 +5,7 @@ const MESSAGEDB = require('../Services/messageService');
 router.use(express.json());
 
 /**
- * This allows users get all the messages of a specific topics
+ * This allows users get all the messages
  */
 router.get('', (req, res) =>{
     console.log(CONSOLEOUTPUT.requestConsole(req));
@@ -18,7 +18,7 @@ router.get('', (req, res) =>{
     })
 });
 /**
- * allows users to post a new message
+ * allows users to post a new messages
  */
 router.post('', (req, res) => {
     const MessageInfo = req.body
@@ -48,6 +48,20 @@ router.get('/:Bid', (req, res) => {
     })
 });
 
+/**
+ * This allows users get all the messages of a specific topics
+ */
+router.get('/reply/:Mid', (req, res) => {
+    const messageId = req.params.Mid;
+    console.log(CONSOLEOUTPUT.requestConsole(req));
+    MESSAGEDB.findReplies(messageId)
+        .then(message => {
+            res.status(200).json(message)
+        })
+        .catch( error => {
+            res.status(500).json({ message: error})
+        })
+});
 
 /**
  * This allows users delete a specific board message from the server

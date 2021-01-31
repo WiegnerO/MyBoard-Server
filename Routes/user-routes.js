@@ -26,8 +26,6 @@ router.get('/:creator_id', (req, res) => {
  */
 router.post('', (req, res) => {
     const userID = req.body.id
-    console.log("hi")
-    console.log(userID)
     console.log(CONSOLEOUTPUT.requestConsole(req));
     USERDB.findUserById(userID)
         .then(message => {

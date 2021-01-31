@@ -6,7 +6,8 @@ module.exports = {
     createMessage,
     findAllMessages,
     findMessagesByBoardId,
-    removeMessage
+    removeMessage,
+    findReplies
 };
 
 async function createMessage(message){
@@ -27,7 +28,7 @@ function findAllMessages(){
  */
 function findMessagesByBoardId(board_id){
     return db('messages')
-        .where({ board_id })
+        .where({board_id})
         .where('parent_message' , null)
 }
 
@@ -38,4 +39,9 @@ function removeMessage(id){
     return db('messages')
     .where({ id })
     .del();
+}
+
+function findReplies(parent_message){
+    return db('messages')
+        .where({parent_message})
 }
