@@ -7,7 +7,8 @@ module.exports = {
     findAllUsers,
     findUserByUsername,
     findUserById,
-    removeUser
+    removeUser,
+    update
 };
 
 /**
@@ -33,7 +34,14 @@ function findAllUsers(){
  */
 function findUserById(id){
     return db('users')
-        .where({ id });
+        .where({ id })
+        .select(
+            'users.id',
+            'users.username',
+            'users.first_name',
+            'users.last_name',
+            'users.about_user'
+        );
 }
 
 /**
@@ -52,4 +60,13 @@ function removeUser(id){
     return db('users')
     .where({ id })
     .del();
+}
+
+async function update(id, about_user){
+    return db('users')
+    .where({ id })
+    .update({about_user: about_user})
+        .then(() => {
+            return findUserById(id)
+        })
 }

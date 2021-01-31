@@ -20,6 +20,7 @@ server.use((req, res, next) => {
 const boardsRouter = require('../Routes/board-routes');
 const boardMessageRouter = require('../Routes/board-messages-routes');
 const authRouter = require('../Authentication/auth-routes');
+const userRouter = require('../Routes/user-routes');
 
 server.use(express.json());
 
@@ -27,6 +28,7 @@ server.use(express.json());
 server.use('/api/auth', authRouter);
 server.use('/api/boards', boardsRouter);
 server.use('/api/messages', boardMessageRouter);
+server.use('/api/user', userRouter);
 
 
 server.get('', (req, res) => {

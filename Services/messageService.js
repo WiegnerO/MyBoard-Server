@@ -4,7 +4,9 @@ const db = knex(config.development);
 
 module.exports = {
     createMessage,
-    findAllMessages
+    findAllMessages,
+    findMessagesByBoardId,
+    removeMessage
 };
 
 async function createMessage(message){
@@ -17,4 +19,23 @@ async function createMessage(message){
  */
 function findAllMessages(){
     return db('messages');
+}
+
+/**
+ * This query finds a specific messages based on thier board_id value
+ * @param {*} id 
+ */
+function findMessagesByBoardId(board_id){
+    return db('messages')
+        .where({ board_id })
+        .where('parent_message' , null)
+}
+
+/**
+ * This query will delete the message tuple with the same id value
+ */
+function removeMessage(id){
+    return db('messages')
+    .where({ id })
+    .del();
 }

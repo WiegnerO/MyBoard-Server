@@ -1,6 +1,8 @@
 
 exports.up = function(knex) {
     return knex.schema.createTable('messages' , table => {
+    table.increments();
+    table.timestamps(true , true)
     table.integer('board_id')
         .unsigned()
         .notNullable();
@@ -15,6 +17,12 @@ exports.up = function(knex) {
         .references('id')
         .inTable('users')
         .onDelete('CASCADE');
+    table.integer('parent_message')
+        .unsigned()
+    table.foreign('parent_message')
+        .references('id')
+        .inTable('messages')
+        .onDelete('CASCADE');
     table.string('post_title')
         .notNullable()
     table.string('post_content')
@@ -25,3 +33,11 @@ exports.up = function(knex) {
   exports.down = function(knex) {
       return knex.schema.dropTable('messages');
   };
+
+// .select(
+//     'message.id',
+//     'message.board_id',
+//     'message.creator_id',
+//     'message.post_title',
+//     'message.post_content'
+// )

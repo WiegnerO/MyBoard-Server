@@ -1,5 +1,4 @@
 const express = require('express');
-const shortid = require('shortid');
 const router = express.Router();
 const CONSOLEOUTPUT = require('../Services/consoleOutput');
 const BOARDDB = require('../Services/boardService');
@@ -39,10 +38,11 @@ router.get('', (req, res) =>{
  */
 router.get('/:name', (req, res) => {
     console.log(CONSOLEOUTPUT.requestConsole(req));
-    const name = req.params.name; 
+    const name = req.params.name;
+    console.log(name)
     BOARDDB.findBoardByname(name)
     .then(board =>{
-        res.status(200).json(board)
+        res.status(200).json(board.id)
     })
     .catch(err => {
         res.res.status(500).json(err)

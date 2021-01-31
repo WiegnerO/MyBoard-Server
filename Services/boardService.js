@@ -7,7 +7,8 @@ module.exports = {
     findAllBoards,
     findBoardById,
     findBoardByname,
-    removeBoard
+    removeBoard,
+    findBoardsMadeBy
 };
 
 /**
@@ -37,13 +38,26 @@ function findBoardById(id){
 }
 
 /**
+ * This query finds all the boards created by a specific user 
+ * @param {*} id 
+ */
+function findBoardsMadeBy(creator_id){
+    return db('myBoards')
+        .where({creator_id});
+}
+
+/**
  * This query finds a specific board based on thier board_name value
  * @param {*} id 
  */
-function findBoardByname(name){
+function findBoardByname(board_name){
     return db('myBoards')
-        .where({ board_name : name }).first();
+        .where({ board_name }).first()
+        .select(
+            'myBoards.id',
+        )
 }
+
 
 /**
  * This query will delete the board tuple with the same id value
