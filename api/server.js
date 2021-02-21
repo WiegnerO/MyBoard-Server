@@ -21,6 +21,7 @@ const boardsRouter = require('../Routes/board-routes');
 const boardMessageRouter = require('../Routes/board-messages-routes');
 const authRouter = require('../Authentication/auth-routes');
 const userRouter = require('../Routes/user-routes');
+const rateRouter = require('../Routes/rate-routes');
 
 server.use(express.json());
 
@@ -29,6 +30,7 @@ server.use('/api/auth', authRouter);
 server.use('/api/boards', boardsRouter);
 server.use('/api/messages', boardMessageRouter);
 server.use('/api/user', userRouter);
+server.use('/api/rate', rateRouter);
 
 
 server.get('', (req, res) => {
