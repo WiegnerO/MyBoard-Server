@@ -8,5 +8,5 @@ module.exports = {
  * @param {*} req 
  */
 function requestConsole(req){
-    return 'Request\t: ' + req.method.toString() +'\nRoute\t: ' + req.originalUrl.toString() + '\n'
+    return 'Request\t: ' + req.method.toString() +'\nRoute\t: ' + req.originalUrl.toString();
 }
