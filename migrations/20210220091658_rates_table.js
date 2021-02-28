@@ -3,10 +3,10 @@
 
 exports.up = function(knex) {
     return knex.schema.createTable('rates' , table => {
-        table.integer('creator_id')
+        table.integer('rater_id')
             .unsigned()
             .notNullable();
-        table.foreign('creator_id')
+        table.foreign('rater_id')
             .references('id')
             .inTable('users')
             .onDelete('CASCADE');
@@ -18,10 +18,10 @@ exports.up = function(knex) {
             .references('id')
             .inTable('messages')
             .onDelete('CASCADE');
-        table.primary(['creator_id', 'message_id']);
+        table.primary(['rater_id', 'message_id']);
     })
 };
 
 exports.down = function(knex) {
-  
+    return knex.schema.dropTable('rates');
 };

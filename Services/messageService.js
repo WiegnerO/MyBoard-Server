@@ -27,8 +27,23 @@ function findAllMessages(){
  * @param {*} id 
  */
 function findMessagesByBoardId(board_id){
-    return db('messages')
+    return db.select(
+        'messages.id',
+        'created_at',
+        'updated_at',
+        'board_id',
+        'messages.creator_id',
+        'parent_message',
+        'post_title',
+        'post_content'
+    )
+        .count('* as rates')
+        .from('messages')
         .where({board_id})
+        .leftOuterJoin({r: 'rates'}, 'messages.id', '=', 'r.message_id')
+        .groupBy('messages.id')
+        .orderBy('rates', 'desc')
+        .orderBy('created_at')
         .where('parent_message' , null)
 }
 
@@ -42,6 +57,21 @@ function removeMessage(id){
 }
 
 function findReplies(parent_message){
-    return db('messages')
+    return db.select(
+        'messages.id',
+        'created_at',
+        'updated_at',
+        'board_id',
+        'messages.creator_id',
+        'parent_message',
+        'post_title',
+        'post_content'
+    )
+        .count('* as rates')
+        .from('messages')
         .where({parent_message})
+        .leftOuterJoin({r: 'rates'}, 'messages.id', '=', 'r.message_id')
+        .groupBy('messages.id')
+        .orderBy('rates', 'desc')
+        .orderBy('created_at');
 }

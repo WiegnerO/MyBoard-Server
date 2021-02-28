@@ -10,15 +10,15 @@ module.exports = {
     deleteRate
 };
 
-function isRatedByUser(message_id, creator_id){
-    return db('rates').where({ message_id }).where({ creator_id })
+function isRatedByUser(message_id, rater_id){
+    return db('rates').where({ message_id }).where({ rater_id })
 }
 
 function messageRating(message_id){
     return db('rates').where({ message_id }).count('* as count')
 }
 
-function getAllRates(message_id, creator_id){
+function getAllRates(message_id, rater_id){
     return db('rates')
 }
 
@@ -28,9 +28,9 @@ async function addRate(rate){
 
 async function deleteRate(mid, uid){
     message_id = mid;
-    creator_id = uid;
+    rater_id = uid;
     await db('rates')
         .where({ message_id })
-        .where({ creator_id })
+        .where({ rater_id })
         .del()
 }

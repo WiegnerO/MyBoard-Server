@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const CONSOLEOUTPUT = require('../Services/consoleOutput')
 const MESSAGEDB = require('../Services/messageService');
+const RATESDB = require('../Services/rateService');
 router.use(express.json());
 
 /**
@@ -24,9 +25,14 @@ router.post('', (req, res) => {
     const MessageInfo = req.body
     console.log(MessageInfo)
     console.log(CONSOLEOUTPUT.requestConsole(req));
-    MESSAGEDB.createMessage(MessageInfo)
-    .then(message => {
-        res.status(200).json(message)
+    MESSAGEDB.createMessage(MessageInfo).then(message => {
+        rate = {
+            rater_id: 1,
+            message_id: message
+        }
+        RATESDB.addRate(rate).then(() =>
+            res.status(200).json(message)
+        )
     })
     .catch( error => {
         res.status(500).json({ message: error})
@@ -82,6 +88,19 @@ router.delete('/:Mid', (req, res) => {
     .catch( error => {
         res.status(500).json({ message: error})
     })
+});
+
+
+router.get('/test/:Bid', (req, res) => {
+    const boardId = req.params.Bid;
+    console.log(CONSOLEOUTPUT.requestConsole(req));
+    MESSAGEDB.repliesTest(boardId)
+        .then(message => {
+            res.status(200).json(message)
+        })
+        .catch( error => {
+            res.status(500).json({ message: error})
+        })
 });
 
 module.exports = router
