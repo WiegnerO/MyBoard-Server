@@ -12,9 +12,10 @@ exports.up = function(knex) {
     table.string('last_name')
         .notNullable();
     table.string('about_user' , 128);
+    table.text('profile_picture');
   })
 };
 
 exports.down = function(knex) {
-    return knex.schema.dropTable('users');
+  return knex.schema.dropTable('users');
 };

@@ -1,9 +1,18 @@
 const express = require('express');
+const bodyParser = require('body-parser')
+const fileUpload = require('express-fileupload');
+const FileType = require('file-type');
 const router = express.Router();
 const CONSOLEOUTPUT = require('../Services/consoleOutput');
 const BOARDDB = require('../Services/boardService');
 const USERDB = require('../Services/UserService');
+
+
 router.use(express.json());
+router.use(bodyParser.urlencoded({ extended: false }));
+router.use(bodyParser.json());
+router.use(fileUpload());
+
 
 
 /**
@@ -48,6 +57,32 @@ router.patch('/:id', (req, res) => {
         res.status(500).json({ message: error})
     })
 });
+
+router.patch('/picture/:id', (req, res) => {
+    const id = req.params.id;
+    console.log(CONSOLEOUTPUT.requestConsole(req));
+    USERDB.updateProfilePicture(id, req)
+        .then(message => {
+            res.status(200).json(message)
+        })
+        .catch( error => {
+            res.status(500).json({ message: error})
+        })
+});
+
+router.get('/picture/:id', (req , res) => {
+    console.log(CONSOLEOUTPUT.requestConsole(req));
+    const id = req.params.id
+    USERDB.getImage(id)
+        .then(async img => {
+            const contentType = await FileType.fromBuffer(img.profile_picture);
+            res.type(contentType.mime);
+            res.end(img.profile_picture);
+        })
+        .catch(e => {
+            res.sendStatus(400);
+        })
+})
 
 module.exports = router
 
