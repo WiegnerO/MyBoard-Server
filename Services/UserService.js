@@ -8,7 +8,9 @@ module.exports = {
     findUserByUsername,
     findUserById,
     removeUser,
-    update
+    update,
+    updateProfilePicture,
+    getImage
 };
 
 /**
@@ -40,7 +42,8 @@ function findUserById(id){
             'users.username',
             'users.first_name',
             'users.last_name',
-            'users.about_user'
+            'users.about_user',
+            'users.profile_picture'
         );
 }
 
@@ -69,4 +72,17 @@ async function update(id, about_user){
         .then(() => {
             return findUserById(id)
         })
+}
+
+async function updateProfilePicture(id, req){
+    const {data} = req.files.profile_picture;
+    return db('users')
+        .where({ id })
+        .update({profile_picture: data})
+}
+
+async function getImage(id) {
+    return  db('users')
+        .where({id})
+        .first();
 }
