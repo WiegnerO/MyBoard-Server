@@ -17,10 +17,8 @@ router.post('/register', (req, res) =>{
     if(!(username && password)){
         res.status(400).json({message: "username and password requried"});
     }else{
-        //hash the password
         const hash = bcyrpt.hashSync(credantials.password, 12);
         credantials.password = hash;
-        //push the username and the newly hashed password in the "database"
         USERDB.addUser(credantials)
             .then(user => {
                 const token = generateToken(credantials);

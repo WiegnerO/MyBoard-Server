@@ -3,10 +3,7 @@ const restricted = require('../Authentication/restricted-middleware')
 const server = express();
 var cors = require('cors')
 
-/**
- * Help with CORS issues
- */
-
+//CORS
 server.use(cors())
 server.use((req, res, next) => {
     res.header('Access-Control-Allow-Origin', '*');
@@ -25,12 +22,11 @@ const rateRouter = require('../Routes/rate-routes');
 
 server.use(express.json());
 
-//TODO uadd the middleware
 server.use('/api/auth', authRouter);
-server.use('/api/boards', boardsRouter);
-server.use('/api/messages', boardMessageRouter);
+server.use('/api/boards', restricted, boardsRouter);
+server.use('/api/messages', restricted, boardMessageRouter);
 server.use('/api/user', userRouter);
-server.use('/api/rate', rateRouter);
+server.use('/api/rate', restricted, rateRouter);
 
 
 server.get('', (req, res) => {

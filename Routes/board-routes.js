@@ -39,7 +39,6 @@ router.get('', (req, res) =>{
 router.get('/:name', (req, res) => {
     console.log(CONSOLEOUTPUT.requestConsole(req));
     const name = req.params.name;
-    console.log(name)
     BOARDDB.findBoardByname(name)
     .then(board =>{
         res.status(200).json(board.id)
