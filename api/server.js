@@ -23,9 +23,9 @@ const rateRouter = require('../Routes/rate-routes');
 server.use(express.json());
 
 server.use('/api/auth', authRouter);
+server.use('/api/user', userRouter);
 server.use('/api/boards', restricted, boardsRouter);
 server.use('/api/messages', restricted, boardMessageRouter);
-server.use('/api/user', userRouter);
 server.use('/api/rate', restricted, rateRouter);
 
 
