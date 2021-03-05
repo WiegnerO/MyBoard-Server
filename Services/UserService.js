@@ -43,7 +43,6 @@ function findUserById(id){
             'users.first_name',
             'users.last_name',
             'users.about_user',
-            'users.profile_picture'
         );
 }
 
