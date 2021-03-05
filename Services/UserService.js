@@ -27,7 +27,14 @@ async function addUser(user){
  * This query returns all the users in the database
  */
 function findAllUsers(){
-    return db('users');
+    return db('users')
+        .select(
+            'users.id',
+            'users.username',
+            'users.first_name',
+            'users.last_name',
+            'users.about_user',
+        );
 }
 
 /**
@@ -59,9 +66,12 @@ function findUserByUsername(user){
  * This query will delete the user tuple with the same id value
  */
 function removeUser(id){
-    return db('users')
-    .where({ id })
-    .del();
+    if (id != 1){
+        return db('users')
+            .where({ id })
+            .del();
+    }
+    return 0
 }
 
 async function update(id, about_user){

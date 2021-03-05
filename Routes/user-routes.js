@@ -84,5 +84,17 @@ router.get('/picture/:id', (req , res) => {
         })
 })
 
+router.delete('/:id', (req,res) => {
+    console.log(CONSOLEOUTPUT.requestConsole(req));
+    const id = req.params.id
+    USERDB.removeUser(id)
+        .then((message) => {
+            res.status(200).json(message)
+        })
+        .catch((err) => {
+            res.status(500).json({ message: error})
+        })
+})
+
 module.exports = router
 

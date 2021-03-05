@@ -56,6 +56,7 @@ router.get('', (req, res) =>{
  * This allows users delete a specific board topic from the server
  */
 router.delete('/:user_id', (req, res) => {
+    console.log("here");
     const user_id = req.params.user_id;
     console.log(CONSOLEOUTPUT.requestConsole(req));
     USERDB.removeUser(user_id)
@@ -64,7 +65,7 @@ router.delete('/:user_id', (req, res) => {
             res.status(200).json({ message: "Deleted"})
         }
         else{
-            res.status(404).json({ message: "Board does not exist"})
+            res.status(404).json({ message: "User cannot be deleted"})
         }
     })
     .catch( error => {
