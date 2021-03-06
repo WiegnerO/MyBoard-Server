@@ -36,6 +36,13 @@ table messages(<br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;post_content <br>
 )
 
+## rates
+table messages(<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;rater_id FK on users table <br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;message_id FK on messages table <br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;message_id and rater_id are the PK of the messages table <br>
+)
+
 # Installation
 ## Requirements
 ### node
