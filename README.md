@@ -36,6 +36,13 @@ table messages(<br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;post_content <br>
 )
 
+## rates
+table messages(<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;rater_id FK on users table <br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;message_id FK on messages table <br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;message_id and rater_id are the PK of the messages table <br>
+)
+
 # Installation
 ## Requirements
 ### node
@@ -49,7 +56,3 @@ table messages(<br>
 3. In the terminal type npm install to install the necessary dependencies 
 4. Open the app in a IDE and in the console type <b>yarn start</b> or <b>npm start</b>
 5. When testing the API recommended to use an API Testing Tool such as Postman or Insomnia or the front end application which can be found at https://github.com/WiegnerO/MyBoard-FrontEnd/edit/main/README.md
-
-npx knex migrate:rollback
-npx knex migrate:latest
-
