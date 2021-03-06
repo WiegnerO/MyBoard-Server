@@ -28,7 +28,7 @@
     "express-session": "^1.17.1",
     "file-type": "^16.2.0",
     "jsonwebtoken": "^8.5.1",
-    "knex": "^0.21.16",
+    "knex": "^0.95.1",
     "nodemon": "^2.0.6",
     "pg": "^8.5.1",
     "shortid": "^2.2.16",

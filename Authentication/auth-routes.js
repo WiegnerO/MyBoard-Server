@@ -48,7 +48,7 @@ router.get('', (req, res) =>{
         res.status(200).json(users)
     })
     .catch(err => {
-        res.res.status(500).json({message : err})
+        res.status(500).json({message : err})
     })
 });
 
